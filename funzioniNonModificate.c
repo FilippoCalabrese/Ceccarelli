@@ -246,9 +246,9 @@ void fn_actor_function_redball_lying_act(fn_actor_t * actor, int x) {
 	}
 }
 
-// /* --------------------------------------------------------------- */
+// /* --------------------------------------------------------------- */ //TESTATA
 // /* -------------------------actor.c--------------------------------*/
-// /* -------------tolta malloc e estratto metodo updateData-------------------------*/
+// /* -------------tolta malloc e estratto metodo updateData----------*/
 // /* --------------------------------------------------------------- */
 
 void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
@@ -287,36 +287,33 @@ void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
 	}
 }
 
-// /* --------------------------------------------------------------- */
+// /* -------------------------------------------------------------- */
 // /* -------------------------list.c--------------------------------*/
-// /* -------------tolta malloc e tolta modifica al parametro list----------------------*/
-// /* --------------------------------------------------------------- */
-//
-// fn_list_t * fn_list_append(fn_list_t * list,
-//     void * data)
-// {
-//   fn_list_t * newitem = malloc(sizeof(fn_list_t));
-//   newitem->data = data;
-//   newitem->next = NULL;
-//
-//   fn_list_t * iter = NULL;
-//   fn_list_t * enditem = NULL;
-//   /* find the last item */
-//   for (iter = fn_list_first(list);
-//       iter != fn_list_last(list);
-//       iter = fn_list_next(iter))
-//   {
-//     enditem = iter;
-//   }
-//
-//   if (enditem != NULL) {
-//     enditem->next = newitem;
-//   } else {
-//     list = newitem;
-//   }
-//   return list;
-// }
-//
+// /* -------------tolta malloc e tolta modifica al parametro list---*/
+// /* -------------------------------------------------------------- */
+
+fn_list_t * fn_list_append(fn_list_t * list, void * data)
+{
+  fn_list_t * newitem = malloc(sizeof(fn_list_t));
+  newitem->data = data;
+  newitem->next = NULL;
+
+  fn_list_t * iter = NULL;
+  fn_list_t * enditem = NULL;
+  /* find the last item */
+  for (iter = fn_list_first(list); iter != fn_list_last(list); iter = fn_list_next(iter))
+  {
+    enditem = iter;
+  }
+
+  if (enditem != NULL) {
+    enditem->next = newitem;
+  } else {
+    list = newitem;
+  }
+  return list;
+}
+
 // /* --------------------------------------------------------------- */
 // /* -------------------------item.c--------------------------------*/
 // /* ----------------------tolta malloc-----------------------------*/
@@ -571,3 +568,137 @@ void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
 //   SDL_FreeSurface(temp);
 //   return choice;
 // }
+/*
+int fn_tilecache_loadtiles(
+        fn_tilecache_t * tc,
+        Uint32 flags,
+        SDL_PixelFormat * format,
+        char * directory
+        )
+{
+    int fd;
+    size_t i = 0;
+    char * path;
+    int res;
+    fn_tileheader_t header;
+
+    Uint8 transparent[] = {1,0,0,0,1,0,0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    };
+
+    char * files[] = {
+        "BACK0.DN1",
+        "BACK1.DN1",
+        "BACK2.DN1",
+        "BACK3.DN1",
+        "SOLID0.DN1",
+        "SOLID1.DN1",
+        "SOLID2.DN1",
+        "SOLID3.DN1",
+        "ANIM0.DN1",
+        "ANIM1.DN1",
+        "ANIM2.DN1",
+        "ANIM3.DN1",
+        "ANIM4.DN1",
+        "ANIM5.DN1",
+        "OBJECT0.DN1",
+        "OBJECT1.DN1",
+        "OBJECT2.DN1",
+        "MAN0.DN1",
+        "MAN1.DN1",
+        "MAN2.DN1",
+        "MAN3.DN1",
+        "MAN4.DN1",
+        "FONT1.DN1",
+        "FONT2.DN1",
+        "BORDER.DN1",
+        "NUMBERS.DN1",
+        0
+    };
+
+    Uint8 size[] = {
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        50,
+        50,
+        50,
+        48,
+        48,
+        48,
+        48,
+        48,
+        50,
+        50,
+        48,
+        48,
+        0
+    };
+
+    path = malloc(strlen(directory) + 12);
+
+    if (path == NULL)
+    {
+        return -1;
+    }
+
+    while (files[i] != 0)
+    {
+        strcpy(path, directory);
+        fd = open(strcat(path, files[i]), O_RDONLY);
+        if (fd == -1)
+        {
+            return -1;
+        }
+
+        fn_tile_loadheader(fd, &header);
+        res =
+          fn_tilecache_loadfile(tc,
+              flags,
+              format,
+              fd,
+              size[i],
+              &header,
+              transparent[i]);
+        close(fd);
+
+        if (res != 0)
+        {
+            return -1;
+        }
+        i++;
+    }
+
+    free(path);
+    return 0;
+}
+ */

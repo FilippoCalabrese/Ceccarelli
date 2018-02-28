@@ -77,6 +77,15 @@ typedef struct fn_actor_singleanimation_data_t {
   int num_frames;
 } fn_actor_singleanimation_data_t;
 
+#ifndef FN_LIST_H
+#define FN_LIST_H
+
+typedef struct fn_list_t fn_list_t;
+
+struct fn_list_t {
+  fn_list_t * next;
+  void * data;
+};
 
 int fn_actor_touches_hero(fn_actor_t * actor);
 int fn_hero_get_fetched_letter(fn_hero_t * hero);

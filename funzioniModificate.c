@@ -582,3 +582,148 @@ int fn_actor_touches_hero(fn_actor_t * actor)
 //     return choice;
 //   }
 // }
+/*
+int fn_tilecache_loadtiles(
+        fn_tilecache_t * tc,
+        Uint32 flags,
+        SDL_PixelFormat * format,
+        char * directory
+        )
+{
+    int fd;
+    size_t i = 0;
+    char * path;
+    int res;
+    int rst=0;
+    fn_tileheader_t header;
+    boolean flag=true;
+
+    Uint8 transparent[] = {1,0,0,0,1,0,0,0,1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    };
+
+    char * files[] = {
+        "BACK0.DN1",
+        "BACK1.DN1",
+        "BACK2.DN1",
+        "BACK3.DN1",
+        "SOLID0.DN1",
+        "SOLID1.DN1",
+        "SOLID2.DN1",
+        "SOLID3.DN1",
+        "ANIM0.DN1",
+        "ANIM1.DN1",
+        "ANIM2.DN1",
+        "ANIM3.DN1",
+        "ANIM4.DN1",
+        "ANIM5.DN1",
+        "OBJECT0.DN1",
+        "OBJECT1.DN1",
+        "OBJECT2.DN1",
+        "MAN0.DN1",
+        "MAN1.DN1",
+        "MAN2.DN1",
+        "MAN3.DN1",
+        "MAN4.DN1",
+        "FONT1.DN1",
+        "FONT2.DN1",
+        "BORDER.DN1",
+        "NUMBERS.DN1",
+        0
+    };
+
+    Uint8 size[] = {
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        50,
+        50,
+        50,
+        48,
+        48,
+        48,
+        48,
+        48,
+        50,
+        50,
+        48,
+        48,
+        0
+    };
+
+  //   fn_item_t * item = malloc(sizeof(fn_item_t));
+  //  struct fn_item_t itemStruct;
+  //   struct fn_item_t *item;
+  //   item=&itemStruct;
+ int n=strlen(directory) + 12;
+  //  path = malloc(strlen(directory) + 12);
+ char pv[n];
+ path=*pv;
+
+    if (path == NULL)
+    {
+        rst=-1;
+        flag=false;
+    }
+
+    while (flag && files[i] != 0)
+    {
+        strcpy(path, directory);
+        fd = open(strcat(path, files[i]), O_RDONLY);
+        if (fd == -1)
+        {
+            rst= -1;
+            break;
+        }
+
+        fn_tile_loadheader(fd, &header);
+        res =
+          fn_tilecache_loadfile(tc,
+              flags,
+              format,
+              fd,
+              size[i],
+              &header,
+              transparent[i]);
+        close(fd);
+
+        if (res != 0)
+        {
+            rst= -1;
+            break;
+        }
+        i++;
+    }
+
+    free(path);
+    return rst;
+}
+
+ */
