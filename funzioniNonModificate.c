@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* --------------------------------------------------------------- */   //TESTATA
+/* --------------------------------------------------------------- */
 /* -------------------------actor.c--------------------------------*/
 /* -------------punti di ritorno multipli--------------------------*/
 /* --------------------------------------------------------------- */
@@ -220,14 +220,14 @@ void fn_actor_function_item_touch_start(fn_actor_t * actor) {
 	}
 }
 
-// /* --------------------------------------------------------------- */  TESTATA
+// /* --------------------------------------------------------------- */
 // /* -------------------------actor.c--------------------------------*/
 // /* -------------aggiunto else--------------------------------------*/
 // /* --------------------------------------------------------------- */
 //
 
 void fn_actor_function_redball_lying_act(fn_actor_t * actor, int x) {
-	fn_actor_redball_lying_data_t * data = actor->data;
+	fn_actor_redball_lying_data_t * data = (fn_actor_redball_lying_data_t *)actor->data; //TODO importare la struct
   fn_hero_t heroStruct = {};
 	fn_hero_t * hero = &heroStruct;
 
@@ -250,7 +250,7 @@ void fn_actor_function_redball_lying_act(fn_actor_t * actor, int x) {
 // /* --------------------------------------------------------------- */
 
 void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
-	fn_actor_singleanimation_data_t * data = malloc(sizeof(fn_actor_singleanimation_data_t));
+	fn_actor_singleanimation_data_t * data = (fn_actor_singleanimation_data_t *)malloc(sizeof(fn_actor_singleanimation_data_t));
 
 	actor->data = data;
 	actor->w = FN_TILE_WIDTH;
@@ -286,8 +286,8 @@ void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
 }
 
 // /* --------------------------------------------------------------- */
-// /* -------------------------list.c---------------------------------*/
-// /* -------------tolta malloc e tolta modifica al parametro list----*/
+// /* -------------------------list.c--------------------------------*/
+// /* -------------tolta malloc e tolta modifica al parametro list----------------------*/
 // /* --------------------------------------------------------------- */
 //
 // fn_list_t * fn_list_append(fn_list_t * list,
