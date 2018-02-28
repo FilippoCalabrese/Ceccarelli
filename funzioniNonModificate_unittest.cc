@@ -48,9 +48,8 @@ namespace {
       1, 1
     };
     fn_actor_redball_lying_data_t * data = &dataStruct;
-    fn_actor_t actorStruct = {
-      0, 0, 0, 0, 0, 0, 0, 0, 0, data
-    };
+    fn_actor_t actorStruct = {};
+    actorStruct.data = data;
     fn_actor_t * actor = &actorStruct;
 
     //prima chiamata al metodo e verifica del valore risultante nei vari campi
@@ -79,9 +78,8 @@ namespace {
       1, 1
     };
     fn_actor_redball_lying_data_t * data = &dataStruct;
-    fn_actor_t actorStruct = {
-      0, 0, 0, 0, 0, 0, 0, 0, 0, data
-    };
+    fn_actor_t actorStruct = {};
+    actorStruct.data = data;
     fn_actor_t * actor = &actorStruct;
 
     //prima chiamata al metodo e verifica del valore risultante nei vari campi
@@ -102,6 +100,8 @@ namespace {
 
   }
 
+//CATERINA
+
   TEST(TestNonModificati, itemTouchStartLetterD){
     fn_actor_t actor = {};
     actor.type = FN_ACTOR_LETTER_D;
@@ -112,7 +112,8 @@ namespace {
     my_level.hero = &my_hero;
 
     actor.level = &my_level;
-    fn_actor_function_item_touch_start(&actor);
+    fn_actor_t * actorPointer = &actor;
+    fn_actor_function_item_touch_start(actorPointer);
 
     EXPECT_EQ('D', my_hero.fetchedletter);
 }

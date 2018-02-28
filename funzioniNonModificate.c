@@ -54,7 +54,9 @@ int fn_hero_get_fetched_letter(fn_hero_t * hero)
   return hero->fetchedletter;
 }
 
-/* --------------------------------------------------------------- */
+fn_hero_t * fn_level_get_hero(fn_level_t * lv) {
+  return lv->hero;
+}
 
 void fn_hero_set_fetched_letter(fn_hero_t * hero, int letter)
 {
@@ -76,11 +78,11 @@ void fn_hero_add_score(fn_hero_t * hero, int score) {
   hero->score+=score;
 }
 
+/*---------------------------------------------------------------------------------------*/
+
 void fn_actor_function_item_touch_start(fn_actor_t * actor) {
-  fn_hero_t heroStruct = {};
-  fn_actor_item_data_t dataStruct = {};
-	fn_hero_t * hero = &heroStruct; //TODO _level_get_hero(actor->level);
-	fn_actor_item_data_t * data = &dataStruct; //TODO (fn_actor_item_data_t *) actor->data;
+        fn_hero_t * hero = fn_level_get_hero(actor->level);
+        fn_actor_item_data_t * data = (fn_actor_item_data_t *) actor->data;
 	int inventory = 1; //fn_hero_get_inventory(hero);
 	int health = 1; //fn_hero_get_health(hero);
 	int firepower = 1; //n_hero_get_firepower(hero);
