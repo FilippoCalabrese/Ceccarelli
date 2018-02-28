@@ -1,0 +1,197 @@
+/*******************************************************************
+ *
+ * Project: FreeNukum 2D Jump'n Run
+ * File:    Shot functions
+ *
+ * *****************************************************************
+ *
+ * Copyright 2007-2008 Wolfgang Silbermayr
+ *
+ * *****************************************************************
+ *
+ * This file is part of Freenukum.
+ * 
+ * Freenukum is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Freenukum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *******************************************************************/
+
+#ifndef FN_SHOT_H
+#define FN_SHOT_H
+
+/* --------------------------------------------------------------- */
+
+typedef struct fn_shot_t fn_shot_t;
+
+/* --------------------------------------------------------------- */
+
+#include "fn_level.h"
+
+/* --------------------------------------------------------------- */
+
+/**
+ * The shot struct.
+ */
+struct fn_shot_t {
+  /**
+   * The level inside which the shot is located.
+   */
+  fn_level_t * level;
+
+  /**
+   * The current x position (in pixels).
+   */
+  int x;
+
+  /**
+   * The current y position (in pixels).
+   */
+  int y;
+
+  /**
+   * Flag that indicates if the shot is (still) alive.
+   */
+  int is_alive;
+
+  /**
+   * The direction to which the shot was fired.
+   */
+  fn_horizontal_direction_e direction;
+
+  /**
+   * The counter for the animation.
+   */
+  int counter;
+
+  /**
+   * The down until the shot is to be removed.
+   */
+  int countdown;
+};
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Create a shot.
+ *
+ * @param  level      The level inside which to create the shot.
+ * @param  x          The initial x position (in pixels).
+ * @param  y          The initial y position (in pixels).
+ * @param  direction  The direction to which the shot goes.
+ *
+ * @return  The newly created shot.
+ */
+fn_shot_t * fn_shot_create(fn_level_t * level,
+    int x, int y, fn_horizontal_direction_e direction);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Delete a shot.
+ *
+ * @param  shot      The shot to delete.
+ */
+void fn_shot_free(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Make the shot act one game cycle.
+ *
+ * @param  shot      The shot.
+ *
+ * @return 0 if shot is obsolete, 1 if it is still alive.
+ */
+int fn_shot_act(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Blit a shot.
+ *
+ * @param  shot       The shot to delete.
+ */
+void fn_shot_blit(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Call this function when a shot gets out of sight.
+ * It tells the shot that it is no longer alive.
+ *
+ * @param  shot      The shot.
+ */
+void fn_shot_gets_out_of_sight(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Get the x position of a shot (in pixels).
+ *
+ * @param  shot  The shot.
+ */
+int fn_shot_get_x(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Get the y position of a shot (in pixels).
+ *
+ * @param  shot  The shot.
+ */
+int fn_shot_get_y(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Get the width of a shot (in pixels).
+ *
+ * @param  shot  The shot.
+ */
+int fn_shot_get_w(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Get the height of a shot (in pixels).
+ *
+ * @param  shot  The shot.
+ */
+int fn_shot_get_h(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Get the level inside which a shot resides.
+ * 
+ * @param  shot  The shot.
+ *
+ * @return The level inside the shot resides.
+ */
+fn_level_t * fn_shot_get_level(fn_shot_t * shot);
+
+/* --------------------------------------------------------------- */
+
+/**
+ * Check if a shot overlaps an actor.
+ *
+ * @param  shot   The shot.
+ * @param  actor  The actor.
+ *
+ * @return 1 if they overlap, otherwise 0.
+ */
+int fn_shot_overlaps_actor(fn_shot_t * shot, fn_actor_t * actor);
+
+/* --------------------------------------------------------------- */
+
+#endif /* FN_SHOT_H */
