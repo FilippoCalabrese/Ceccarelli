@@ -1,7 +1,6 @@
 #include "fn_actor.h"
 #include "fn.h"
 
-
 typedef struct fn_list_t fn_list_t;
 typedef struct fn_level_t fn_level_t;
 typedef struct fn_actor_t fn_actor_t;
@@ -132,16 +131,3 @@ fn_hero_t * fn_level_get_hero(fn_level_t * lv);
 fn_list_t * fn_list_first(fn_list_t * list);
 fn_list_t * fn_list_last(fn_list_t * list);
 fn_list_t * fn_list_next(fn_list_t * list);
-fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize, int x, int y);
-void fn_actor_function_singleanimation_create(fn_actor_t * actor);
-
-#define SOLID_END                              (8 * 48)
-#define ANIM_START                            SOLID_END
-#define ANIM_BOMBFIRE             (ANIM_START +     90)
-#define OBJ_DUST                  (OBJ_START  +     19)
-#define OBJ_START                 (ANIM_START + 6 * 48)
-#define OBJ_STEAM                 (OBJ_START  +     34)
-#define ANIM_ROBOT                (ANIM_START +     80)
-
-
-

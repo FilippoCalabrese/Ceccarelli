@@ -323,6 +323,7 @@ int fn_actor_touches_hero(fn_actor_t * actor)
 // /* --------------------------------------------------------------- */
 //
 // fn_item_t * fn_item_create(
+//     fn_item_type_e type,
 //     fn_level_t * level,
 //     fn_tilecache_t * tilecache,
 //     int pixelsize,

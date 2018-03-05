@@ -3,8 +3,6 @@
 #include "gtest/gtest.h"
 namespace {
 
-//TEST fn_actor_touches_hero
-
   TEST(TestNonModificati, testTouchesLeft){
     fn_actor_t actor = {
       100, 100, 1, 1, 1, 1, 1
@@ -40,7 +38,6 @@ namespace {
     EXPECT_EQ(1, fn_actor_touches_hero(&actor));
   }
 
-// TEST fn_actor_function_redball_lying_act
 
   TEST(TestNonModificati, testRedballLyingWithTrueValue){
 
@@ -101,7 +98,7 @@ namespace {
 
   }
 
-//TEST fn_actor_function_item_touch_start
+//CATERINA
 
   TEST(TestNonModificati, itemTouchStartLetterD){
     fn_actor_t actor = {};
@@ -232,89 +229,5 @@ namespace {
     EXPECT_EQ(item->x, my_item.x);
     EXPECT_EQ(item->y, my_item.y);
   }
-  
-  // TEST fn_actor_function_singleanimation_create
-  
-    TEST(TestNonModificati, singleanimationFIRE){
-    fn_actor_t actor = {};
-    fn_actor_singleanimation_data_t dataStruct ={0,0,0};
-    actor.data= &dataStruct;
-    actor.type = FN_ACTOR_FIRE;
-    fn_actor_t * actorPointer = &actor;
-    fn_actor_function_singleanimation_create(actorPointer);
-    fn_actor_singleanimation_data_t * my_data=(fn_actor_singleanimation_data_t *)actor.data;
 
-    EXPECT_EQ(ANIM_BOMBFIRE, my_data->tile);
 }
-
-    TEST(TestNonModificati, singleanimationDUSTCLOUD){
-    fn_actor_t actor = {};
-    fn_actor_singleanimation_data_t dataStruct ={0,0,0};
-    actor.data= &dataStruct;
-    actor.type = FN_ACTOR_DUSTCLOUD;
-    fn_actor_t * actorPointer = &actor;
-    fn_actor_function_singleanimation_create(actorPointer);
-    fn_actor_singleanimation_data_t *  my_data=(fn_actor_singleanimation_data_t *)actor.data;
-
-    EXPECT_EQ(OBJ_DUST, my_data->tile);
-}
-
-    TEST(TestNonModificati, singleanimationSTEAM){
-    fn_actor_t actor = {};
-    fn_actor_singleanimation_data_t dataStruct ={0,0,0};
-    actor.data= &dataStruct;
-    actor.type = FN_ACTOR_STEAM;
-    fn_actor_t * actorPointer = &actor;
-    fn_actor_function_singleanimation_create(actorPointer);
-    fn_actor_singleanimation_data_t * my_data=(fn_actor_singleanimation_data_t *)actor.data;
-
-    EXPECT_EQ(OBJ_STEAM, my_data->tile);
-}
-
-    TEST(TestNonModificati, singleanimationROBOT_DISAPPEARING){
-    fn_actor_t actor = {};
-    fn_actor_singleanimation_data_t dataStruct ={0,0,0};
-    actor.data= &dataStruct;
-    actor.type = FN_ACTOR_ROBOT_DISAPPEARING;
-    fn_actor_t * actorPointer = &actor; 
-    fn_actor_function_singleanimation_create(actorPointer);
-    fn_actor_singleanimation_data_t * my_data=(fn_actor_singleanimation_data_t *)actor.data;
-
-    EXPECT_EQ(ANIM_ROBOT+3, my_data->tile);
-}
-
-    TEST(TestNonModificati, singleanimationDEFAULT){
-    fn_actor_t actor = {};
-    fn_actor_singleanimation_data_t dataStruct ={0,0,0};
-    actor.data= &dataStruct;
-    actor.type = (fn_actor_type_e)0;
-    fn_actor_t * actorPointer = &actor;
-    fn_actor_function_singleanimation_create(actorPointer);
-    fn_actor_singleanimation_data_t * my_data=(fn_actor_singleanimation_data_t *)actor.data;
-
-    EXPECT_EQ(0, my_data->tile);
-}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

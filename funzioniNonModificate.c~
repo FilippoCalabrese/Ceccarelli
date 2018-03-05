@@ -261,22 +261,22 @@ void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
 
 	switch (actor->type) {
 	case FN_ACTOR_FIRE:
-		data->tile = (ANIM_BOMBFIRE);
+		data->tile = ANIM_BOMBFIRE;
 		data->current_frame = 0;
 		data->num_frames = 6;
 		break;
 	case FN_ACTOR_DUSTCLOUD:
-		data->tile = (OBJ_DUST);
+		data->tile = OBJ_DUST;
 		data->current_frame = 0;
 		data->num_frames = 5;
 		break;
 	case FN_ACTOR_STEAM:
-		data->tile = (OBJ_STEAM);
+		data->tile = OBJ_STEAM;
 		data->current_frame = 0;
 		data->num_frames = 5;
 		break;
 	case FN_ACTOR_ROBOT_DISAPPEARING:
-		data->tile = (ANIM_ROBOT) + 3;
+		data->tile = ANIM_ROBOT + 3;
 		data->current_frame = 0;
 		data->num_frames = 7;
 		break;
@@ -286,7 +286,6 @@ void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
 		break;
 	}
 }
-
 
 // /* -------------------------------------------------------------- */
 // /* -------------------------list.c--------------------------------*/
