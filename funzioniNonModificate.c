@@ -358,27 +358,27 @@ fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize
   return item;
 }
 
-// /* --------------------------------------------------------------- */
-// /* -------------------------item.c--------------------------------*/
+//* --------------------------------------------------------------- */
+//* -------------------------item.c--------------------------------*/
 // /* -------------switch ridondante + return multiplo----------------*/
 // /* --------------------------------------------------------------- */
-// int fn_item_act(fn_item_t * item)
-// {
-//   switch(item->type) {
-//     default:
-//       /* TODO */
-//       /* everything falls to the floor by default */
-//       if (!fn_level_is_solid(item->level, (item->x)/2, (item->y + 2)/2)) {
-//         item->y++;
-//       }
-//       break;
-//   }
-//   if (item->todelete) {
-//     return 0;
-//   } else {
-//     return 1;
-//   }
-// }
+int fn_item_act(fn_item_t * item)
+{
+   switch(item->type) {
+    default:
+       /* TODO */
+       /* everything falls to the floor by default */
+      if (!fn_level_is_solid(item->level, (item->x)/2, (item->y + 2)/2)) {
+         item->y++;
+       }
+       break;
+   }
+   if (item->todelete) {
+     return 0;
+   } else {
+     return 1;
+   }
+ }
 // /* --------------------------------------------------------------- */
 // /* -------------------------picture_splash.c--------------------------------*/
 // /* ----------------------return + break-----------------------------*/
