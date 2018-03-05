@@ -218,20 +218,6 @@ namespace {
     EXPECT_EQ(102, my_hero.health);
   }
 
-  // TEST ITEM_CREATE
-
-  TEST(TestNonModificati, itemCreate){	
-    
-    fn_level_t my_level = {};
-    fn_item_t my_item = {1000, 1, 1, &my_level, 0};
-
-    fn_item_t * item = fn_item_create(FN_ITEM_TYPE_BOX_GREY_EMPTY, &my_level, 1000, 1, 1);
-    EXPECT_EQ(item->pixelsize, my_item.pixelsize);
-    EXPECT_EQ(item->level, my_item.level);
-    EXPECT_EQ(item->todelete, my_item.todelete);
-    EXPECT_EQ(item->x, my_item.x);
-    EXPECT_EQ(item->y, my_item.y);
-  }
   
   // TEST fn_actor_function_singleanimation_create
   
@@ -294,6 +280,80 @@ namespace {
 
     EXPECT_EQ(0, my_data->tile);
 }
+
+  // TEST FN_LIST_APPEND
+
+  TEST(TestNonModificati, list_appendEmptyList)	{
+
+   fn_list_t newItem ={NULL,NULL};
+   int data=1;
+   void* dataP = &data;
+   fn_list_t * newList= fn_list_append(&newItem, dataP);
+   EXPECT_EQ(dataP, (newItem.next)->data);
+    
+  }
+  
+  TEST(TestNonModificati, list_appendOneElementPresent)	{
+    
+   fn_list_t item1 ={NULL,NULL};
+   fn_list_t item2= {NULL,NULL};
+   item1.next =&item2;
+   int data=1;
+   void* dataP = &data;
+   fn_list_t * newList= fn_list_append(&item1, dataP);
+   fn_list_t * t = (item1.next)->next;
+   EXPECT_EQ(dataP, t->data);
+    
+  }
+  
+  // TEST ITEM_CREATE
+
+  TEST(TestNonModificati, itemCreate){	
+    
+    fn_level_t my_level = {};
+    fn_item_t my_item = {0,1000, 1, 1, &my_level, 0};
+
+    fn_item_t * item = fn_item_create(FN_ITEM_TYPE_BOX_GREY_EMPTY, &my_level, 1000, 1, 1);
+    EXPECT_EQ(item->pixelsize, my_item.pixelsize);
+    EXPECT_EQ(item->level, my_item.level);
+    EXPECT_EQ(item->todelete, my_item.todelete);
+    EXPECT_EQ(item->x, my_item.x);
+    EXPECT_EQ(item->y, my_item.y);
+  }
+  
+  // TEST ITEM_ACT
+
+  TEST(TestNonModificati, item_actUpdated){
+  fn_item_t item= {};
+  fn_level_t myLevel={};
+  item.level=&myLevel;
+  item.x=-1;
+  item.y=0;
+  fn_item_act(&item);
+  EXPECT_EQ( 1, item.y);
+  }	
+  
+  TEST(TestNonModificati, item_actNotTodelete){
+  fn_item_t item= {};
+  fn_level_t myLevel={};
+  item.level=&myLevel;
+  item.todelete=0;
+  int result= fn_item_act(&item);
+  EXPECT_EQ(1, result);
+  }	
+  
+  TEST(TestNonModificati, item_actTodelete){
+  fn_item_t item= {};
+  fn_level_t myLevel={};
+  item.level=&myLevel;
+  item.todelete=1;
+  int result= fn_item_act(&item);
+  EXPECT_EQ(0, result);
+  }	
+
+
+
+   
 }
 
 

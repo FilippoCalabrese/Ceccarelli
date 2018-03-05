@@ -8,6 +8,7 @@ typedef struct fn_actor_t fn_actor_t;
 typedef struct fn_hero_t fn_hero_t;
 typedef enum fn_actor_type_e fn_actor_type_e;
 
+
 struct fn_list_t {
   fn_list_t * next;
   void * data;
@@ -42,6 +43,7 @@ typedef struct fn_actor_redball_lying_data_t {
 } fn_actor_redball_lying_data_t;
 
 struct fn_item_t {
+  int type;
   int pixelsize;
   int x;
   int y;
@@ -105,6 +107,7 @@ enum fn_item_type_e {
 };
 
 
+
 typedef struct fn_actor_item_data_t {
   int tile;
   int current_frame;
@@ -132,8 +135,12 @@ fn_hero_t * fn_level_get_hero(fn_level_t * lv);
 fn_list_t * fn_list_first(fn_list_t * list);
 fn_list_t * fn_list_last(fn_list_t * list);
 fn_list_t * fn_list_next(fn_list_t * list);
+fn_list_t * fn_list_append(fn_list_t * list, void * data);
 fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize, int x, int y);
 void fn_actor_function_singleanimation_create(fn_actor_t * actor);
+int fn_level_is_solid(fn_level_t * lv, int x, int y);
+int fn_item_act(fn_item_t * item);
+
 
 #define SOLID_END                              (8 * 48)
 #define ANIM_START                            SOLID_END

@@ -281,8 +281,9 @@ void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
 		data->num_frames = 7;
 		break;
 	default:
-		printf(__FILE__ ":%d: warning: singleanimation #%d"
-		" added which is not a singleanimation\n", __LINE__, actor->type);
+	     data->tile=0;
+		//printf(__FILE__ ":%d: warning: singleanimation #%d"
+		//" added which is not a singleanimation\n", __LINE__, actor->type);
 		break;
 	}
 }
@@ -362,23 +363,30 @@ fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize
 //* -------------------------item.c--------------------------------*/
 // /* -------------switch ridondante + return multiplo----------------*/
 // /* --------------------------------------------------------------- */
-// int fn_item_act(fn_item_t * item)
-// {
-//    switch(item->type) {
-//     default:
-//        /* TODO */
-//        /* everything falls to the floor by default */
-//       if (!fn_level_is_solid(item->level, (item->x)/2, (item->y + 2)/2)) {
-//          item->y++;
-//        }
-//        break;
-//    }
-//    if (item->todelete) {
-//      return 0;
-//    } else {
-//      return 1;
-//    }
-//  }
+int fn_level_is_solid(fn_level_t * lv, int x, int y)
+{
+  if (x < 0 || y < 0 || x > FN_LEVEL_WIDTH || y > FN_LEVEL_HEIGHT) {
+    return 1;
+  }
+  return lv->solid[y][x];
+}
+
+ int fn_item_act(fn_item_t * item){
+    switch(item->type) {
+     default:
+        /* TODO */
+       /* everything falls to the floor by default */
+      if (!fn_level_is_solid(item->level, (item->x)/2, (item->y + 2)/2)) {
+         item->y++;
+       }
+       break;
+   }
+   if (item->todelete) {
+     return 0;
+   } else {
+     return 1;
+   }
+ }
 // /* --------------------------------------------------------------- */
 // /* -------------------------picture_splash.c--------------------------------*/
 // /* ----------------------return + break-----------------------------*/
@@ -398,11 +406,11 @@ fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize
 //   int res;
 //   SDL_Event event;
 //   SDL_Surface * picture;
-//
+// 
 //   path = malloc(strlen(datapath) + strlen(filename) + 1);
 //   sprintf(path, "%s%s", datapath, filename);
 //   fd = open(path, O_RDONLY);
-//
+// 
 //   if (fd == -1) {
 //     fn_error_printf(1024, "Could not open file %s for reading: %s",
 //         path,strerror(errno));
@@ -410,34 +418,34 @@ fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize
 //     return 0;
 //   }
 //   free(path);
-//
+// 
 //   int flags = screen->flags;
-//
+// 
 //   picture = fn_picture_load(fd, pixelsize, flags, screen->format);
-//
+// 
 //   SDL_BlitSurface(picture, NULL, screen, NULL);
-//
-//
+// 
+// 
 //   if (tilecache != NULL && msg != NULL) {
 //     SDL_Surface * msgbox;
 //     SDL_Rect dstrect;
-//
+// 
 //     msgbox = fn_msgbox(pixelsize,
 //         screen->flags,
 //         screen->format,
 //         tilecache,
 //         msg);
-//
+// 
 //     dstrect.x = x * pixelsize;
 //     dstrect.y = y * pixelsize;
-//
+// 
 //     SDL_BlitSurface(msgbox, NULL, screen, &dstrect);
 //     SDL_FreeSurface(msgbox);
 //   }
-//
+// 
 //   SDL_UpdateRect(screen, 0, 0, 0, 0);
 //   SDL_FreeSurface(picture);
-//
+// 
 //   while (1) {
 //     res = SDL_WaitEvent(&event);
 //     if (res == 1) {
@@ -465,7 +473,7 @@ fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize
 //   }
 //   return 0;
 // }
-//
+
 // /* --------------------------------------------------------------- */
 // /* -------------------------mainmenu.c-------------------------*/
 // /* ------------estratto readChoiche metodo con switch---------------*/
