@@ -1,0 +1,5 @@
+tests:
+	g++ -I ~/googletest/googletest/include -L ~/googletest/googletest funzioniDiSupporto.c funzioniNonModificate.c funzioniModificate.c funzioniNonModificate_unittest.cc funzioniModificate_unittest.cc gtest_main.cc -fpermissive -lpthread -lgtest -o tests
+
+clean :
+	rm tests

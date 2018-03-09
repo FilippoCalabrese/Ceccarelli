@@ -1,24 +1,20 @@
-#include "fn.h"
-#include "fn_object.h"
-#include "funzioniNonModificate.h"
+#include "lib/lib.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 /* --------------------------------------------------------------- */
 /* -------------------------actor.c--------------------------------*/
 /* -------------punti di ritorno multipli--------------------------*/
 /* --------------------------------------------------------------- */
-int fn_hero_get_x(){
-  return 5;
-}
-
-int fn_hero_get_y(){
-  return 5;
-}
 
 int fn_actor_touches_hero(fn_actor_t * actor) {
-	int hero_x = fn_hero_get_x() * FN_HALFTILE_WIDTH;
-	int hero_y = fn_hero_get_y() * FN_HALFTILE_HEIGHT;
+	int hero_x = hero_get_x() * FN_HALFTILE_WIDTH;
+	int hero_y = hero_get_y() * FN_HALFTILE_HEIGHT;
 	int hero_w = FN_TILE_WIDTH;
 	int hero_h = FN_TILE_HEIGHT * 2;
 
@@ -48,37 +44,6 @@ int fn_actor_touches_hero(fn_actor_t * actor) {
 // /* -------------aggiunto default al switch-------------------------*/
 // /* --------------------------------------------------------------- */
 //
-
-int fn_hero_get_fetched_letter(fn_hero_t * hero)
-{
-  return hero->fetchedletter;
-}
-
-fn_hero_t * fn_level_get_hero(fn_level_t * lv) {
-  return lv->hero;
-}
-
-void fn_hero_set_fetched_letter(fn_hero_t * hero, int letter)
-{
-  hero->fetchedletter = letter;
-}
-
-void fn_hero_set_firepower( fn_hero_t * hero, int firepower) {
-  if (firepower > 4) {
-    firepower = 4;
-  }
-  hero->firepower = firepower;
-}
-
-void fn_hero_improve_health(fn_hero_t * hero, int improvement){
-  hero->health+=improvement;
-}
-
-void fn_hero_add_score(fn_hero_t * hero, int score) {
-  hero->score+=score;
-}
-
-/*---------------------------------------------------------------------------------------*/
 
 void fn_actor_function_item_touch_start(fn_actor_t * actor) {
         fn_hero_t * hero = fn_level_get_hero(actor->level);
@@ -246,7 +211,7 @@ void fn_actor_function_redball_lying_act(fn_actor_t * actor, int x) {
 	}
 }
 
-// /* --------------------------------------------------------------- */ //TESTATA
+// /* --------------------------------------------------------------- */ 
 // /* -------------------------actor.c--------------------------------*/
 // /* -------------tolta malloc e estratto metodo updateData----------*/
 // /* --------------------------------------------------------------- */
@@ -288,38 +253,11 @@ void fn_actor_function_singleanimation_create(fn_actor_t * actor) {
 	}
 }
 
-
 // /* -------------------------------------------------------------- */
 // /* -------------------------list.c--------------------------------*/
 // /* -------------tolta malloc e tolta modifica al parametro list---*/
 // /* -------------------------------------------------------------- */
 /* ----------------------------------------------------------------- */
-
-fn_list_t * fn_list_first(fn_list_t * list)
-{
-  return list;
-}
-
-/* --------------------------------------------------------------- */
-
-fn_list_t * fn_list_last(fn_list_t * list)
-{
-  return NULL;
-}
-
-/* --------------------------------------------------------------- */
-
-fn_list_t * fn_list_next(fn_list_t * list)
-{
-  if (list != NULL) {
-    return list->next;
-  }
-  return NULL;
-}
-
-/* --------------------------------------------------------------- */
-
-
 
 fn_list_t * fn_list_append(fn_list_t * list, void * data)
 {
@@ -348,9 +286,12 @@ fn_list_t * fn_list_append(fn_list_t * list, void * data)
 // /* ---------tolta malloc + tolto parametro non utilizzato------------*/
 // /* --------------------------------------------------------------- */
 
-fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize, int x, int y)
+fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, fn_tilecache_t * tilecache, int pixelsize, int x, int y)
 {
   fn_item_t * item = (fn_item_t *)malloc(sizeof(fn_item_t));
+
+  item->type = type;
+  item->tilecache = tilecache;
   item->pixelsize = pixelsize;
   item->x = x;
   item->y = y;
@@ -363,13 +304,6 @@ fn_item_t * fn_item_create(fn_item_type_e type,fn_level_t * level, int pixelsize
 //* -------------------------item.c--------------------------------*/
 // /* -------------switch ridondante + return multiplo----------------*/
 // /* --------------------------------------------------------------- */
-int fn_level_is_solid(fn_level_t * lv, int x, int y)
-{
-  if (x < 0 || y < 0 || x > FN_LEVEL_WIDTH || y > FN_LEVEL_HEIGHT) {
-    return 1;
-  }
-  return lv->solid[y][x];
-}
 
  int fn_item_act(fn_item_t * item){
     switch(item->type) {
@@ -388,339 +322,318 @@ int fn_level_is_solid(fn_level_t * lv, int x, int y)
    }
  }
 // /* --------------------------------------------------------------- */
-// /* -------------------------picture_splash.c--------------------------------*/
-// /* ----------------------return + break-----------------------------*/
+// /* -------------------------fn_actor.c--------------------------------*/
+// /* ----------------------numero ciclomatico-----------------------------*/
 // /* --------------------------------------------------------------- */
 //
-// int fn_picture_splash_show_with_message(char * datapath,
-//     char * filename,
-//     int pixelsize,
-//     SDL_Surface * screen,
-//     fn_tilecache_t * tilecache,
-//     char * msg,
-//     int x,
-//     int y)
-// {
-//   char * path;
-//   int fd;
-//   int res;
-//   SDL_Event event;
-//   SDL_Surface * picture;
-// 
-//   path = malloc(strlen(datapath) + strlen(filename) + 1);
-//   sprintf(path, "%s%s", datapath, filename);
-//   fd = open(path, O_RDONLY);
-// 
-//   if (fd == -1) {
-//     fn_error_printf(1024, "Could not open file %s for reading: %s",
-//         path,strerror(errno));
-//     free(path);
-//     return 0;
-//   }
-//   free(path);
-// 
-//   int flags = screen->flags;
-// 
-//   picture = fn_picture_load(fd, pixelsize, flags, screen->format);
-// 
-//   SDL_BlitSurface(picture, NULL, screen, NULL);
-// 
-// 
-//   if (tilecache != NULL && msg != NULL) {
-//     SDL_Surface * msgbox;
-//     SDL_Rect dstrect;
-// 
-//     msgbox = fn_msgbox(pixelsize,
-//         screen->flags,
-//         screen->format,
-//         tilecache,
-//         msg);
-// 
-//     dstrect.x = x * pixelsize;
-//     dstrect.y = y * pixelsize;
-// 
-//     SDL_BlitSurface(msgbox, NULL, screen, &dstrect);
-//     SDL_FreeSurface(msgbox);
-//   }
-// 
-//   SDL_UpdateRect(screen, 0, 0, 0, 0);
-//   SDL_FreeSurface(picture);
-// 
-//   while (1) {
-//     res = SDL_WaitEvent(&event);
-//     if (res == 1) {
-//       switch(event.type) {
-//         case SDL_QUIT:
-//           return 1;
-//           break;
-//         case SDL_KEYDOWN:
-//           switch(event.key.keysym.sym) {
-//             case SDLK_ESCAPE:
-//             case SDLK_RETURN:
-//               return 1;
-//             default:
-//               /* ignore other keys */
-//               break;
-//           }
-//         case SDL_VIDEOEXPOSE:
-//           SDL_UpdateRect(screen, 0, 0, 0, 0);
-//           break;
-//         default:
-//           /* ignore unknown events */
-//           break;
-//       }
-//     }
-//   }
-//   return 0;
-// }
+
+void fn_actor_function_acme_act(fn_actor_t * actor)
+{
+  fn_actor_acme_data_t * data = (fn_actor_acme_data_t * )actor->data;
+
+  fn_hero_t * hero = fn_level_get_hero(actor->level);
+
+  switch(data->counter) {
+    case 0:
+      {
+        int xl = actor->x;
+        int xr = xl + actor->w;
+        int y = actor->y;
+        int hxl = fn_hero_get_x(hero) * FN_HALFTILE_WIDTH;
+        int hxr = hxl + FN_TILE_WIDTH;
+        int hy = fn_hero_get_y(hero) * FN_HALFTILE_HEIGHT;
+
+        if (y < hy && xl < hxr && xr > hxl) {
+                        
+          /* check if there are solid parts between hero and acme */
+          int i = 0;
+          int solidbetween = 0;
+          for (i = y + FN_TILE_HEIGHT; i < hy && !solidbetween; i += FN_TILE_HEIGHT) {
+            if (fn_level_is_solid(actor->level, xl / FN_TILE_WIDTH, i / FN_TILE_WIDTH) ||
+                fn_level_is_solid(actor->level, xl / FN_TILE_WIDTH + 1, i / FN_TILE_WIDTH)) {
+
+              solidbetween = 1;
+            }
+          }
+          if (!solidbetween) {
+            data->counter++;
+          }
+        }
+      }
+      break;
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 9:
+      actor->y++;
+      data->counter++;
+      break;
+    case 2:
+    case 4:
+    case 6:
+    case 8:
+    case 10:
+      actor->y--;
+      data->counter++;
+      break;
+    default:
+      if (fn_level_is_solid(actor->level,
+            actor->x / FN_TILE_WIDTH,
+            (actor->y / FN_TILE_HEIGHT) + 1))
+      {
+        fn_level_add_actor(actor->level,
+            FN_ACTOR_STEAM, actor->x + FN_HALFTILE_WIDTH, actor->y);
+        actor->is_alive = 0;
+      } else {
+        actor->y += FN_TILE_HEIGHT;
+      }
+      break;
+  }
+}
 
 // /* --------------------------------------------------------------- */
 // /* -------------------------mainmenu.c-------------------------*/
 // /* ------------estratto readChoiche metodo con switch---------------*/
 // /* --------------------------------------------------------------- */
+
+ int fn_mainmenu(fn_tilecache_t * tilecache, int pixelsize, SDL_Surface * screen, int type, SDLKey key){
+   SDL_Surface * msgbox;
+   SDL_Surface * temp;
+   SDL_Rect dstrect;
+ 
+   int res = 0;
+   int choice = 0;
+   char msg[] =
+     "\n"
+     "  FREENUKUM MAIN MENU \n"
+     "  ------------------- \n"
+     "\n"
+     " S)tart a new game \n"
+     " R)estore an old game \n"
+     " I)nstructions \n"
+     " O)rdering information \n"
+     " G)ame setup \n"
+     " F)ullscreen toggle \n"
+     " E)pisode change\n"
+     " H)igh scores \n"
+     " P)reviews/Main Demo! \n"
+     " V)iew user demo \n"
+     " T)itle screen \n"
+     " C)redits \n"
+     " Q)uit to DOS \n"
+     "\n";
+ 
+   SDL_Event event;
+ 
+/*
+   msgbox = fn_msgbox(pixelsize,screen->flags,screen->format,tilecache,msg);
+
+   dstrect.x = ((screen->w)-(msgbox->w))/2;
+   dstrect.y = ((screen->h)-(msgbox->h))/2;
+   dstrect.w = msgbox->w;
+   dstrect.h = msgbox->h;
+
+   temp = SDL_CreateRGBSurface(screen->flags,
+       dstrect.w, dstrect.h,
+       screen->format->BitsPerPixel,
+       0, 0, 0, 0);
+   SDL_BlitSurface(screen, &dstrect, temp, NULL);
+
+   SDL_BlitSurface(msgbox, NULL, screen, &dstrect);
+   SDL_FreeSurface(msgbox);
+   SDL_UpdateRect(screen, 0, 0, 0, 0);
+*/
+ 
+   while (!choice) {
+     event.type = type;
+     event.key.keysym.sym = key;
+     switch(event.type) {
+	 case SDL_KEYDOWN:
+	   switch(event.key.keysym.sym) {
+	     case SDLK_s:
+	     case SDLK_RETURN:
+	       choice = FN_MENUCHOICE_START;
+	       break;
+	     case SDLK_r:
+	       choice = FN_MENUCHOICE_RESTORE;
+	       break;
+	     case SDLK_i:
+	       choice = FN_MENUCHOICE_INSTRUCTIONS;
+	       break;
+	     case SDLK_o:
+	       choice = FN_MENUCHOICE_ORDERINGINFO;
+	       break;
+	     case SDLK_g:
+	       choice = FN_MENUCHOICE_SETUP;
+	       break;
+	     case SDLK_f:
+	       choice = FN_MENUCHOICE_FULLSCREENTOGGLE;
+	       break;
+	     case SDLK_e:
+	       choice = FN_MENUCHOICE_EPISODECHANGE;
+	       break;
+	     case SDLK_h:
+	       choice = FN_MENUCHOICE_HIGHSCORES;
+	       break;
+	     case SDLK_p:
+	       choice = FN_MENUCHOICE_PREVIEWS;
+	       break;
+	     case SDLK_v:
+	       choice = FN_MENUCHOICE_VIEWUSERDEMO;
+	       break;
+	     case SDLK_t:
+	       choice = FN_MENUCHOICE_TITLESCREEN;
+	       break;
+	     case SDLK_c:
+	       choice = FN_MENUCHOICE_CREDITS;
+	       break;
+	     case SDLK_q:
+	     case SDLK_ESCAPE:
+	       choice = FN_MENUCHOICE_QUIT;
+	       break;
+	     default:
+	       choice = -1;
+	       break;
+	   }
+	 case SDL_VIDEOEXPOSE:
+	   // SDL_UpdateRect(screen, 0, 0, 0, 0); 
+           break;
+	 default:
+	   choice = -1;
+	   break;
+
+     }
+   }
+   // SDL_BlitSurface(temp, NULL, screen, &dstrect);
+   // SDL_FreeSurface(temp);
+   return choice;
+ }
+// /* --------------------------------------------------------------- */
+// /* -------------------------hero.c-------------------------*/
+// /* ---------numero linee codice alto (+ numero ciclomatico?)------------*/
+// /* --------------------------------------------------------------- */
 //
-// int fn_mainmenu(fn_tilecache_t * tilecache,
-//     int pixelsize,
-//     SDL_Surface * screen)
-// {
-//   SDL_Surface * msgbox;
-//   SDL_Surface * temp;
-//   SDL_Rect dstrect;
-//
-//   int res = 0;
-//   int choice = 0;
-//   char * msg =
-//     "\n"
-//     "  FREENUKUM MAIN MENU \n"
-//     "  ------------------- \n"
-//     "\n"
-//     " S)tart a new game \n"
-//     " R)estore an old game \n"
-//     " I)nstructions \n"
-//     " O)rdering information \n"
-//     " G)ame setup \n"
-//     " F)ullscreen toggle \n"
-//     " E)pisode change\n"
-//     " H)igh scores \n"
-//     " P)reviews/Main Demo! \n"
-//     " V)iew user demo \n"
-//     " T)itle screen \n"
-//     " C)redits \n"
-//     " Q)uit to DOS \n"
-//     "\n";
-//
-//   SDL_Event event;
-//
-//   msgbox = fn_msgbox(pixelsize,
-//       screen->flags,
-//       screen->format,
-//       tilecache,
-//       msg);
-//
-//   dstrect.x = ((screen->w)-(msgbox->w))/2;
-//   dstrect.y = ((screen->h)-(msgbox->h))/2;
-//   dstrect.w = msgbox->w;
-//   dstrect.h = msgbox->h;
-//
-//   temp = SDL_CreateRGBSurface(screen->flags,
-//       dstrect.w, dstrect.h,
-//       screen->format->BitsPerPixel,
-//       0, 0, 0, 0);
-//   SDL_BlitSurface(screen, &dstrect, temp, NULL);
-//
-//   SDL_BlitSurface(msgbox, NULL, screen, &dstrect);
-//   SDL_FreeSurface(msgbox);
-//   SDL_UpdateRect(screen, 0, 0, 0, 0);
-//
-//   while (!choice) {
-//     res = SDL_WaitEvent(&event);
-//     if (res == 1) {
-//       switch(event.type) {
-//         case SDL_KEYDOWN:
-//           switch(event.key.keysym.sym) {
-//             case SDLK_s:
-//             case SDLK_RETURN:
-//               choice = FN_MENUCHOICE_START;
-//               break;
-//             case SDLK_r:
-//               choice = FN_MENUCHOICE_RESTORE;
-//               break;
-//             case SDLK_i:
-//               choice = FN_MENUCHOICE_INSTRUCTIONS;
-//               break;
-//             case SDLK_o:
-//               choice = FN_MENUCHOICE_ORDERINGINFO;
-//               break;
-//             case SDLK_g:
-//               choice = FN_MENUCHOICE_SETUP;
-//               break;
-//             case SDLK_f:
-//               choice = FN_MENUCHOICE_FULLSCREENTOGGLE;
-//               break;
-//             case SDLK_e:
-//               choice = FN_MENUCHOICE_EPISODECHANGE;
-//               break;
-//             case SDLK_h:
-//               choice = FN_MENUCHOICE_HIGHSCORES;
-//               break;
-//             case SDLK_p:
-//               choice = FN_MENUCHOICE_PREVIEWS;
-//               break;
-//             case SDLK_v:
-//               choice = FN_MENUCHOICE_VIEWUSERDEMO;
-//               break;
-//             case SDLK_t:
-//               choice = FN_MENUCHOICE_TITLESCREEN;
-//               break;
-//             case SDLK_c:
-//               choice = FN_MENUCHOICE_CREDITS;
-//               break;
-//             case SDLK_q:
-//             case SDLK_ESCAPE:
-//               choice = FN_MENUCHOICE_QUIT;
-//               break;
-//             default:
-//               /* ignore other input */
-//               break;
-//           }
-//         case SDL_VIDEOEXPOSE:
-//           SDL_UpdateRect(screen, 0, 0, 0, 0);
-//           break;
-//         default:
-//           /* ignore other events */
-//           break;
-//       }
-//     }
-//   }
-//   SDL_BlitSurface(temp, NULL, screen, &dstrect);
-//   SDL_FreeSurface(temp);
-//   return choice;
-// }
-//
-// int fn_tilecache_loadtiles(fn_tilecache_t * tc, Uint32 flags, SDL_PixelFormat * format, char * directory)
-// {
-//     int fd;
-//     size_t i = 0;
-//     char * path;
-//     int res;
-//     fn_tileheader_t header;
-//
-//     Uint8 transparent[] = {1,0,0,0,1,0,0,
-//       0,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1,
-//       1
-//     };
-//
-//     char * files[] = {
-//         "BACK0.DN1",
-//         "BACK1.DN1",
-//         "BACK2.DN1",
-//         "BACK3.DN1",
-//         "SOLID0.DN1",
-//         "SOLID1.DN1",
-//         "SOLID2.DN1",
-//         "SOLID3.DN1",
-//         "ANIM0.DN1",
-//         "ANIM1.DN1",
-//         "ANIM2.DN1",
-//         "ANIM3.DN1",
-//         "ANIM4.DN1",
-//         "ANIM5.DN1",
-//         "OBJECT0.DN1",
-//         "OBJECT1.DN1",
-//         "OBJECT2.DN1",
-//         "MAN0.DN1",
-//         "MAN1.DN1",
-//         "MAN2.DN1",
-//         "MAN3.DN1",
-//         "MAN4.DN1",
-//         "FONT1.DN1",
-//         "FONT2.DN1",
-//         "BORDER.DN1",
-//         "NUMBERS.DN1",
-//         0
-//     };
-//
-//     Uint8 size[] = {
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         50,
-//         50,
-//         50,
-//         48,
-//         48,
-//         48,
-//         48,
-//         48,
-//         50,
-//         50,
-//         48,
-//         48,
-//         0
-//     };
-//
-//     path = malloc(strlen(directory) + 12);
-//
-//     if (path == NULL)
-//     {
-//         return -1;
-//     }
-//
-//     while (files[i] != 0)
-//     {
-//         strcpy(path, directory);
-//         fd = open(strcat(path, files[i]), O_RDONLY);
-//         if (fd == -1)
-//         {
-//             return -1;
-//         }
-//
-//         fn_tile_loadheader(fd, &header);
-//         res =
-//           fn_tilecache_loadfile(tc,
-//               flags,
-//               format,
-//               fd,
-//               size[i],
-//               &header,
-//               transparent[i]);
-//         close(fd);
-//
-//         if (res != 0)
-//         {
-//             return -1;
-//         }
-//         i++;
-//     }
-//
-//     free(path);
-//     return 0;
-// }
+
+int fn_hero_act(fn_hero_t * hero, void * data)
+{
+  fn_level_t * lv = (fn_level_t *)data;
+  int heromoved = 0;
+
+  if (hero->immunitycountdown > 0) {
+    hero->immunitycountdown--;
+  }
+  if (hero->immunitycountdown == 0 && hero->hurtingactors != NULL) {
+    hero->immunitycountdown = hero->immunityduration;
+   // fn_hero_set_health(hero, hero->health - 1);
+  }
+
+  if (lv == NULL) {
+    return hero->health;
+  }
+
+  if (hero->motion == FN_HERO_MOTION_WALKING) {
+    /* our hero is moving */
+    switch(hero->direction) {
+      case fn_horizontal_direction_left:
+        if (!fn_hero_would_collide(hero, lv, hero->x-1, hero->y)) {
+          hero->x--;
+          heromoved = 1;
+        }
+        break;
+      case fn_horizontal_direction_right:
+        if (!fn_hero_would_collide(hero, lv, hero->x+1, hero->y)) {
+          /* there is no solid block left of our hero */
+          hero->x++;
+          heromoved = 1;
+        }
+        break;
+      default:
+        /* do nothing else */
+        break;
+    }
+  }
+
+  if (hero->flying == FN_HERO_FLYING_FALSE) {
+    /* our hero is standing or walking */
+    hero->verticalspeed = 0;
+
+  } else {
+    /* our hero is jumping or falling */
+    if (hero->counter > 0) {
+      /* jumping */
+      hero->counter--;
+      switch(hero->counter) {
+        case 3:
+        case 2:
+          hero->verticalspeed = 1;
+          break;
+        case 1:
+        case 0:
+          hero->verticalspeed = 0;
+          break;
+        default:
+          hero->verticalspeed = 2;
+          break;
+
+      }
+
+      
+      int i = 0;
+      for (i = 0; i < hero->verticalspeed; i++) {
+        if (!fn_hero_would_collide(hero, lv, hero->x, hero->y-1)) {
+          hero->y--;
+          heromoved = 1;
+        } else {
+          /* we bumped against the ceiling */
+          hero->counter = 0;
+        }
+      }
+    } else {
+      /* falling */
+      if (hero->verticalspeed != 6) {
+        hero->verticalspeed++;
+      }
+
+      int i = 0;
+      for (i = 0; i < hero->verticalspeed/2; i++) {
+        if (!fn_hero_would_collide(hero, lv, hero->x, hero->y+1)) {
+          hero->y++;
+          heromoved = 1;
+        }
+      }
+    }
+  }
+
+  if (fn_hero_would_collide(hero, lv, hero->x, hero->y+1)) {
+    if (hero->flying == FN_HERO_FLYING_TRUE) {
+      SDL_Event event;
+      event.type = SDL_USEREVENT;
+      event.user.code = fn_event_herolanded;
+      event.user.data1 = hero;
+      event.user.data2 = 0;
+     // SDL_PushEvent(&event);
+    }
+    /* we are standing on solid ground */
+    fn_hero_set_flying(hero, FN_HERO_FLYING_FALSE);
+    hero->counter = 0;
+  } else {
+    /* we fall down */
+    if (hero->counter == 0) {
+      fn_hero_set_flying(hero, FN_HERO_FLYING_TRUE);
+      hero->counter = 0;
+    }
+  }
+
+  if (heromoved) {
+    SDL_Event event;
+    event.type = SDL_USEREVENT;
+    event.user.code = fn_event_heromoved;
+    event.user.data1 = hero;
+    event.user.data2 = 0;
+   // SDL_PushEvent(&event);
+  }
+
+  return hero->health;
+}
+
